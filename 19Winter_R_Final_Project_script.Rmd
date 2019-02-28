@@ -1,0 +1,92 @@
+---
+title: "19Winter_R_Final_Project"
+author: "Xi Yang"
+date: "2/28/2019"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(manipulate)
+library(ggplot2)
+library(psych)
+library(plot3D)
+```
+## In order to see interactive plot (1 & 3) in the Plots panel, please
+## 1. click on the gear sign next to Knit in the editor toolbar
+## 2. Click "Chunk Output in Console" from the list to check it (if it is not already checked)
+## 3. Click on the gear sign to the upper left of the plot in the Plots panel
+## 4. Click on the manipulator. Have fun!
+
+```{r Plot 1, interactive 2D plot}
+BayesRatioSimple <- function(Sigob, Total, beta, alpha=.05, pH1=.8, print = TRUE){
+  a <- dbinom(Sigob, size = Total, prob = alpha) 
+  #a <- p (these results | H0 true)
+  b <- dbinom(Sigob, size = Total, prob = beta)
+  #b <- p (these results | H1 true)
+  c <- b/a*pH1/(1-pH1)
+  #c <- Bayes Theorem odds ratio of H1:H0
+  return(c)}
+
+interactive1<-manipulate(
+  plot(beta <- seq(0, 1, 0.1), BayesRatioSimple(10*x,10,beta,alpha,pH1)),
+  x=slider(0, 1, step=.1, initial =.5),
+  alpha=picker(.001, .01, .05, .1),
+  pH1=picker(0,.2,.5,.8))
+```
+
+```{r Plot 2, 3D plot}
+# make a colored 3Dplot with alpha = .05, pH1 = .8
+x<-seq(0, 1, 0.1)
+y<-seq(0, 1, 0.1)
+BayesRatioModelSet <- function(x, beta, alpha=.05, pH1=.8, print = TRUE){
+  a <- dbinom(x*10, 10, prob = alpha) 
+  #a <- p (these results | H0 true)
+  b <- dbinom(x*10, 10, prob = beta)
+  #b <- p (these results | H1 true)
+  c <- b/a*pH1/(1-pH1)
+  #c <- Bayes Theorem odds ratio of H1:H0
+  return(log10(c+1))}
+z = outer(x,y,BayesRatioModelSet)
+# Surface colours corresponding to z-values
+nrz <- nrow(z)
+ncz <- ncol(z)
+jet.colors <- colorRampPalette( c("blue", "green"))
+nbcol <- 100
+color <- jet.colors(nbcol)
+zfacet <- z[-1, -1] + z[-1, -ncz] + z[-nrz, -1] + z[-nrz, -ncz]
+facetcol <- cut(zfacet, nbcol) 
+persp(x, y, z, col = color[facetcol],
+      xlab = "power",
+      ylab = "proportion",
+      zlab = "Log10(BayesRatio+1)",
+      main = "BayesRatioDependingonProportionPowerAlphapH1",
+      theta=30,phi=30,ticktype="detailed",
+      d = 1)
+```
+
+```{r Plot 3, interactive 3D plot}
+x<-seq(0, 1, 0.1)
+y<-seq(0, 1, 0.1)
+BayesRatioModel <- function(x, beta, alpha, pH1, print = TRUE){
+  a <- dbinom(x*10, 10, prob = alpha) 
+  #a <- p (these results | H0 true)
+  b <- dbinom(x*10, 10, prob = beta)
+  #b <- p (these results | H1 true)
+  c <- b/a*pH1/(1-pH1)
+  #c <- Bayes Theorem odds ratio of H1:H0
+  return(log10(c+1))}
+
+interactive2<-manipulate(persp(x,y,outer(x,y,BayesRatioModel,alpha, pH1),
+                               xlab = "power",
+                               ylab = "proportion",
+                               zlab = "Log10(BayesRatio+1)",
+                               shade = .1,
+                               main = "BayesRatioDependingonProportionPowerAlphapH1",
+                               theta=30,phi=30,ticktype="detailed",
+                               d = 1), 
+                         pH1=slider(.1, .9, step=.1, initial =.8),
+                         alpha = picker(.001, .01, .05, .1))
+```
