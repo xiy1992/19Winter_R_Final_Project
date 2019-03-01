@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(manipulate)
 library(ggplot2)
 library(psych)
-library(plot3D)
+library(plot3D) #AAC: Cool to learn what this package can do - it seems really cool!
 ```
 ## In order to see interactive plot (1 & 3) in the Plots panel, please
 ## 1. click on the gear sign next to Knit in the editor toolbar
@@ -35,6 +35,8 @@ interactive1<-manipulate(
   x=slider(0, 1, step=.1, initial =.5),
   alpha=picker(.001, .01, .05, .1),
   pH1=picker(0,.2,.5,.8))
+
+#AAC: Wow, Xi! This is insanely cool. Although I am unfamiliar with this function "manipulate," and much of the theoretical stats work that goes into what the plot represents, it is cool to see what the package can do from your plot! Clearly you know R and stats really, really well. Maybe it would help to provide a bit more annotations about what this plot represents? (even it is probably a result of my lack of knowledge) :D Maybe also consider filling in the dots with a nice color and adding a title?
 ```
 
 ```{r Plot 2, 3D plot}
@@ -59,12 +61,14 @@ color <- jet.colors(nbcol)
 zfacet <- z[-1, -1] + z[-1, -ncz] + z[-nrz, -1] + z[-nrz, -ncz]
 facetcol <- cut(zfacet, nbcol) 
 persp(x, y, z, col = color[facetcol],
-      xlab = "power",
-      ylab = "proportion",
+      xlab = "Power",
+      ylab = "Proportion",
       zlab = "Log10(BayesRatio+1)",
-      main = "BayesRatioDependingonProportionPowerAlphapH1",
+      main = "Bayes Ratio Depending on Proportion Power Alpha pH1",
       theta=30,phi=30,ticktype="detailed",
       d = 1)
+
+#AAC: Again, WOWZA! So So So cool to see this 3d graph. I had no idea that something like this was even possible. Even though I don't understand the theoretical stat concepts, I can appreciate how INSANELY awesome this graph is. I look forward to hearing more about it in your presentation. I would suggest maybe adding spaces in the title and perhaps switching to a color scheme that is more color blind friendly?
 ```
 
 ```{r Plot 3, interactive 3D plot}
@@ -80,13 +84,15 @@ BayesRatioModel <- function(x, beta, alpha, pH1, print = TRUE){
   return(log10(c+1))}
 
 interactive2<-manipulate(persp(x,y,outer(x,y,BayesRatioModel,alpha, pH1),
-                               xlab = "power",
-                               ylab = "proportion",
+                               xlab = "Power",
+                               ylab = "Proportion",
                                zlab = "Log10(BayesRatio+1)",
                                shade = .1,
-                               main = "BayesRatioDependingonProportionPowerAlphapH1",
+                               main = "Bayes Ratio Depending on Proportion Power Alpha pH1",
                                theta=30,phi=30,ticktype="detailed",
                                d = 1), 
                          pH1=slider(.1, .9, step=.1, initial =.8),
                          alpha = picker(.001, .01, .05, .1))
+
+#AAC: Again, this plot is out of this world cool. Very visually appealing, and I'm sure it will be a really useful tool when explaining stats theory. I have never seen something like this before in R. I love the interactive feature, and it's really engaging. Is there a way to add a fun color to it? :D I'd also be curious to hear how the audiences for these three plots may differ, as I see them all being targeted toward a (very smart!) scientific community. 
 ```
