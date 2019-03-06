@@ -35,6 +35,8 @@ interactive1<-manipulate(
   x=slider(0, 1, step=.1, initial =.5),
   alpha=picker(.001, .01, .05, .1),
   pH1=picker(0,.2,.5,.8))
+
+#BC: This is such a fascinating graph! I have never heard of the {manipulate} package, but your graph has totally inspired me to try it out! I don't have much to comment on here, because Bayesian statistics pretty much goes over my head. But a couple suggestions might be to add a title to your plot and simplify the axis labels. You could also perhaps add a caption that summarizes the instructions for interacting with the graph. I am still a novice at writing functions, so I learned a lot from looking through your first chunk of code. 
 ```
 
 ```{r Plot 2, 3D plot}
@@ -53,7 +55,7 @@ z = outer(x,y,BayesRatioModelSet)
 # Surface colours corresponding to z-values
 nrz <- nrow(z)
 ncz <- ncol(z)
-jet.colors <- colorRampPalette( c("blue", "green"))
+jet.colors <- colorRampPalette( c("blue", "green")) #BC: This is such a cool function! Seems really useful for using color with continuous variables. 
 nbcol <- 100
 color <- jet.colors(nbcol)
 zfacet <- z[-1, -1] + z[-1, -ncz] + z[-nrz, -1] + z[-nrz, -ncz]
@@ -65,6 +67,8 @@ persp(x, y, z, col = color[facetcol],
       main = "BayesRatioDependingonProportionPowerAlphapH1",
       theta=30,phi=30,ticktype="detailed",
       d = 1)
+
+#BC: This is so cool! I think this is a really effective 3D visualization. I'm not exactly sure what the color scale refers to, however--is there a legend you could include that would explain this? 
 ```
 
 ```{r Plot 3, interactive 3D plot}
@@ -89,4 +93,6 @@ interactive2<-manipulate(persp(x,y,outer(x,y,BayesRatioModel,alpha, pH1),
                                d = 1), 
                          pH1=slider(.1, .9, step=.1, initial =.8),
                          alpha = picker(.001, .01, .05, .1))
+
+#BC: Again, so cool! Would it be possible to add color to this graph like your last, static one? Maybe the color scale could change as you tweak the input parameters? Also, I noticed that as you change the inputs, the y axis scale changes a bit. You might not actually want this to happen, but maybe having the axis stay the same as you change the inputs would result in a more dramtic visual change in the graph? 
 ```
