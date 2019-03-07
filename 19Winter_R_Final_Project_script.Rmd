@@ -20,7 +20,7 @@ library(plot3D)
 ## 3. Click on the gear sign to the upper left of the plot in the Plots panel
 ## 4. Click on the manipulator. Have fun!
 
-```{r Plot 1, echo=TRUE}
+```{r Plot 1 interactive plot, echo=TRUE}
 BayesRatioSimple <- function(Sigob, Total, beta, alpha=.05, pH1=.8, print = TRUE){
   a <- dbinom(Sigob, size = Total, prob = alpha) 
   #a <- p (these results | H0 true)
