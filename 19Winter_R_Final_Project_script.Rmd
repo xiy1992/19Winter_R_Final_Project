@@ -4,7 +4,7 @@ author: "Xi Yang"
 date: "2/28/2019"
 output: html_document
 editor_options: 
-  chunk_output_type: console
+  chunk_output_type: inline # I am not sure if this is what you wanted, but I just changed the option from "chunk output in console" to "inline".
 ---
 
 ```{r setup, include=FALSE}
@@ -20,7 +20,7 @@ library(plot3D)
 ## 3. Click on the gear sign to the upper left of the plot in the Plots panel
 ## 4. Click on the manipulator. Have fun!
 
-```{r Plot 1, interactive 2D plot}
+```{r Plot 1 interactive plot, echo=TRUE}
 BayesRatioSimple <- function(Sigob, Total, beta, alpha=.05, pH1=.8, print = TRUE){
   a <- dbinom(Sigob, size = Total, prob = alpha) 
   #a <- p (these results | H0 true)
@@ -28,13 +28,14 @@ BayesRatioSimple <- function(Sigob, Total, beta, alpha=.05, pH1=.8, print = TRUE
   #b <- p (these results | H1 true)
   c <- b/a*pH1/(1-pH1)
   #c <- Bayes Theorem odds ratio of H1:H0
-  return(c)}
+  return(c)} 
 
 interactive1<-manipulate(
   plot(beta <- seq(0, 1, 0.1), BayesRatioSimple(10*x,10,beta,alpha,pH1)),
   x=slider(0, 1, step=.1, initial =.5),
   alpha=picker(.001, .01, .05, .1),
   pH1=picker(0,.2,.5,.8))
+
 ```
 
 ```{r Plot 2, 3D plot}
@@ -62,7 +63,7 @@ persp(x, y, z, col = color[facetcol],
       xlab = "power",
       ylab = "proportion",
       zlab = "Log10(BayesRatio+1)",
-      main = "BayesRatioDependingonProportionPowerAlphapH1",
+      main = "Bayes Ratio Depending on Proportion Power Alpha pH1", # I tried adding spaces in between words and is not showing below, but it shows in the preview
       theta=30,phi=30,ticktype="detailed",
       d = 1)
 ```
@@ -84,9 +85,32 @@ interactive2<-manipulate(persp(x,y,outer(x,y,BayesRatioModel,alpha, pH1),
                                ylab = "proportion",
                                zlab = "Log10(BayesRatio+1)",
                                shade = .1,
-                               main = "BayesRatioDependingonProportionPowerAlphapH1",
+                               main = "Bayes Ratio Depending on Proportion Power Alpha pH1", # I also added some spaces here
                                theta=30,phi=30,ticktype="detailed",
                                d = 1), 
                          pH1=slider(.1, .9, step=.1, initial =.8),
                          alpha = picker(.001, .01, .05, .1))
 ```
+
+```{r}
+
+# Hi Xi,
+
+# Wow, very cool interactive visualizations. Very interesting paper idea and very important topic to take on. I am impressed!
+
+# The following are things that I see as strenghts in your code and visualizations:
+# - The interactiveness is a major strenght. It was really cool to see how changing the variables made the plane move! 
+# - Conveying complex ideas with your visualization.
+# - Colors in plot #2 makes you visualization more attractive. 
+
+# From your script I learned an alternative way to produce visualizations. I bet you have done a lot of research outside of class! 
+
+# Suggestion: You are probably aware of this, but you may want to find out how to add spaces between the values on the axes and their titles so they don't overlap. 
+# Also, I wanted to let you know that for some reason, the code that is within this {} did not running for me.
+
+# I hope I helped with the YAML thing. I am sorry that I don't know how to help you with the highlighting part. 
+
+# # Impressive work you have done so far!
+
+```
+
